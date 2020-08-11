@@ -12,7 +12,7 @@
   <body>
     <div
       class="card"
-      style="margin: auto; width: 50%; padding: 20px;"
+      style="margin: auto; width: 40%; padding: 20px;"
       id="converter"
     >
       <div class="form-group">
@@ -64,6 +64,21 @@
           Dither - quite slow
         </label>
       </div>
+      <div class="form-check">
+        <br />
+        <input
+          class="form-check-input"
+          type="checkbox"
+          name="toResize"
+          id="toResize"
+          value="toResize"
+          onchange="checkResize()"
+          checked
+        />
+        <label class="form-check-label" for="toResize">
+          Resize
+        </label>
+      </div>
       <div class="form-group" style="padding-top: 15px;">
         <input type="number" min="1" max="800" id="width" onchange="resize()" />
         <label for="width">width</label><br />
@@ -74,19 +89,39 @@
         <button type="button" id="mainButton" class="btn btn-primary">
           Convert
         </button>
+        <button
+          type="button"
+          id="downloadButton"
+          class="btn btn-secondary"
+          disabled
+          onclick="downloadHandler()"
+        >
+          Download Header File
+        </button>
       </div>
       <span id="loading" style="display: none;">loading...</span>
-      <div>
-        <canvas
-          style="
-            display: block;
-            max-width: 100%;
-            max-height: 100%;
-            width: auto;
-            height: auto;
-          "
-          id="preview"
-        ></canvas>
+      <div style="width: 100%; display: table;">
+        <div style="display: table-row;">
+          <div style="display: table-cell;">
+            <canvas
+              style="
+                display: block;
+                max-width: 100%;
+                max-height: 100%;
+                width: auto;
+                height: auto;
+              "
+              id="preview"
+            ></canvas>
+          </div>
+          <div style="display: table-cell;">
+            <textarea
+              id="textOutput"
+              style="height: 150px;"
+              readonly
+            ></textarea>
+          </div>
+        </div>
       </div>
     </div>
 

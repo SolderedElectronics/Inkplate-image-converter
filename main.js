@@ -5,6 +5,8 @@ let s;
 let name;
 let file;
 
+let result;
+
 document.getElementById("imageFile").onchange = (event) => {
     file = event.target.files[0];
 
@@ -13,11 +15,17 @@ document.getElementById("imageFile").onchange = (event) => {
     reader.onload = () => {
         preview.src = reader.result;
 
-        document.getElementById("width").value = preview.width;
-        document.getElementById("height").value = preview.height;
-    };
+        setTimeout(() => {
+            document.getElementById("width").value = preview.width;
+            document.getElementById("height").value = preview.height;
+        }, 10);
+    }
 
     reader.readAsDataURL(file);
+}
+
+function checkResize() {
+    document.getElementById("width").disabled = !document.getElementById("toResize").checked;
 }
 
 function resize() {
@@ -112,14 +120,23 @@ document.getElementById("mainButton").onclick = () => {
             }
             finished = 1;
 
-            download(name + ".h", s + `int ${name}_w = ${w};\nint ${name}_h = ${h};\n`);
+            result = {
+                name: name + ".h",
+                raw: s + `int ${name}_w = ${w};\nint ${name}_h = ${h};\n`
+            }
 
+            document.getElementById("downloadButton").disabled = false;
+            document.getElementById("textOutput").value = result.raw;
             document.getElementById("loading").style.display = "none";
 
         }
         reader.readAsDataURL(file);
     }, 0);
 };
+
+function downloadHandler() {
+    download(result.name, result.raw);
+}
 
 function download(filename, text) {
     var element = document.createElement('a');
