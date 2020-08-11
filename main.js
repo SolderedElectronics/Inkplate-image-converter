@@ -1,90 +1,124 @@
-var output = new Image();
+var output = new Image(),
+    preview = new Image();
 
-let s1;
-let s2;
+let s;
 let name;
-
 let file;
 
 document.getElementById("imageFile").onchange = (event) => {
     file = event.target.files[0];
+
+    var reader = new FileReader();
+
+    reader.onload = () => {
+        preview.src = reader.result;
+
+        document.getElementById("width").value = preview.width;
+        document.getElementById("height").value = preview.height;
+    };
+
+    reader.readAsDataURL(file);
+}
+
+function resize() {
+    let ratio = parseInt(preview.height) / parseInt(preview.width);
+    document.getElementById("height").value = parseInt(document.getElementById("width").value * ratio);
 }
 
 document.getElementById("mainButton").onclick = () => {
     if (!file)
         return;
-    var reader = new FileReader();
-    reader.onload = () => {
-        output.src = reader.result;
 
-        var canvas = document.createElement('canvas');
-        canvas.width = output.width;
-        canvas.height = output.height;
+    document.getElementById("loading").style.display = "block";
 
-        canvas.getContext('2d').drawImage(output, 0, 0, output.width, output.height);
+    setTimeout(() => {
+        var reader = new FileReader();
+        reader.onload = () => {
+            output.src = reader.result;
 
-        name = file.name.substring(0, file.name.length - 4).replaceAll(" ", "_").replaceAll("-", "_").replaceAll(".", "_");
+            var canvas = document.createElement('canvas');
 
-        s1 = `const uint8_t ${name}[] PROGMEM = {\n`;
-        s2 = `const uint8_t ${name}[] PROGMEM = {\n`;
+            let h = parseInt(document.getElementById("height").value);
+            let w = parseInt(document.getElementById("width").value);
 
-        let last = 0;
+            output.width = w;
+            output.height = h;
 
-        for (let i = 0; i < output.height; ++i) {
-            for (let j = 0; j < output.width; ++j) {
-                let pixels = canvas.getContext('2d').getImageData(j, i, 1, 1).data;
+            canvas.width = w;
+            canvas.height = h;
 
-                let val = parseInt(pixels[0] * .299 + pixels[1] * .587 + pixels[2] * .114);
+            output.style.filter = "grayscale(100%)"; //I hope this works
 
-                if (last == 0)
-                    last = val & 0xF0;
-                else {
-                    last |= (val >> 4) & 0x0F;
+            console.log(w, h);
 
-                    s1 += `0x${last.toString(16)},`;
-                    last = 0;
+            canvas.getContext('2d').drawImage(output, 0, 0, w, h);
+
+            name = file.name.substring(0, file.name.length - 4).replaceAll(" ", "_").replaceAll("-", "_").replaceAll(".", "_");
+
+            s = `const uint8_t ${name}[] PROGMEM = {\n`;
+
+            if (document.getElementById("dither").checked)
+                dither(canvas, document.getElementById("3bit").checked ? 3 : 1);
+
+            document.getElementById("preview").getContext('2d').drawImage(canvas, 0, 0, parseInt(preview.width) / parseInt(preview.height) * document.getElementById("preview").height, document.getElementById("preview").height);
+
+            let last = 0;
+
+            if (document.getElementById("3bit").checked) {
+                for (let i = 0; i < h; ++i) {
+                    for (let j = 0; j < w; ++j) {
+                        let pixels = canvas.getContext('2d').getImageData(j, i, 1, 1).data;
+
+                        let val = pixels[0];
+
+                        if (j % 2 == 0)
+                            last = val & 0xF0;
+                        else {
+                            last |= (val >> 4) & 0x0F;
+
+                            s += `0x${last.toString(16)},`;
+                            last = 0;
+                        }
+                    }
+                    if (h % 2 != 0) {
+                        s += `0x${last.toString(16)},`;
+                        last = 0;
+                    }
+                    s += "\n";
                 }
-            }
-        }
-        if (last != 0)
-            s1 += `0x${last.toString(16)},`;
-        s1 += `};\n`;
+                s += `};\n`;
+            } else {
+                for (let i = 0; i < h; ++i) {
+                    for (let j = 0; j < w; ++j) {
+                        let pixels = canvas.getContext('2d').getImageData(j, i, 1, 1).data;
 
-        for (let i = 0; i < output.height; ++i) {
-            for (let j = 0; j < output.width; ++j) {
-                let pixels = canvas.getContext('2d').getImageData(j, i, 1, 1).data;
+                        let val = (pixels[0] >> 7) & 1;
 
-                let val = (parseInt(pixels[0] * .299 + pixels[1] * .587 + pixels[2] * .114) >> 7) & 1;
-                let cnt = 7 - (i * (output.width + 8 - output.width % 8) + j) % 8;
+                        let cnt = 7 - j % 8;
 
-                last |= val << cnt;
+                        last |= val << cnt;
 
-                if (cnt == 0) {
-                    s2 += `0x${last.toString(16)},`;
-                    last = 0;
+                        if (cnt == 0) {
+                            s += `0x${last.toString(16)},`;
+                            last = 0;
+                        }
+                    }
+                    if (w % 8 != 0) {
+                        s += `0x${last.toString(16)},`;
+                        last = 0;
+                    }
                 }
+                s += `};\n`;
             }
-            if (output.width % 8 != 0) {
-                s2 += `0x${last.toString(16)},`;
-                last = 0;
-            }
+            finished = 1;
+
+            download(name + ".h", s + `int ${name}_w = ${w};\nint ${name}_h = ${h};\n`);
+
+            document.getElementById("loading").style.display = "none";
+
         }
-
-        s2 += `};\n`;
-
-        finished = 1;
-
-        if (document.getElementById("include").checked)
-            download(name + ".h", (document.getElementById("1bit").checked ?
-                s2 + `int ${name}_w = ${output.width};\nint ${name}_h = ${output.height};\n` :
-                s1 + `int ${name}_w = ${output.width};\nint ${name}_h = ${output.height};\n`));
-        else
-            download(name + ".h", (document.getElementById("1bit").checked ?
-                s2 :
-                s1));
-    }
-    reader.readAsDataURL(file);
-
+        reader.readAsDataURL(file);
+    }, 0);
 };
 
 function download(filename, text) {
@@ -98,4 +132,39 @@ function download(filename, text) {
     element.click();
 
     document.body.removeChild(element);
+}
+
+function dither(canvas, depth) {
+    let ctx = canvas.getContext('2d');
+
+    let id = ctx.createImageData(1, 1);
+    let d = id.data;
+    d[3] = 255;
+
+    for (let i = 1; i < parseInt(document.getElementById("height").value) - 1; ++i) {
+        for (let j = 1; j < parseInt(document.getElementById("width").value) - 1; ++j) {
+            let pixels = ctx.getImageData(j, i, 1, 1).data;
+
+            let oldpixel = pixels[0];
+            let newpixel = oldpixel & (depth == 3 ? 0xE0 : 0x80);
+
+            d[0] = newpixel;
+            ctx.putImageData(id, j, i);
+
+            let quant_error = oldpixel - newpixel;
+
+            d[0] = ctx.getImageData(j + 1, i, 1, 1).data[0] + Math.floor(quant_error * 7 / 16);
+            ctx.putImageData(id, j + 1, i);
+
+            d[0] = ctx.getImageData(j - 1, i + 1, 1, 1).data[0] + Math.floor(quant_error * 3 / 16);
+            ctx.putImageData(id, j - 1, i + 1);
+
+            d[0] = ctx.getImageData(j, i + 1, 1, 1).data[0] + Math.floor(quant_error * 5 / 16);
+            ctx.putImageData(id, j, i + 1);
+
+            d[0] = ctx.getImageData(j + 1, i + 1, 1, 1).data[0] + Math.floor(quant_error * 1 / 16);
+            ctx.putImageData(id, j + 1, i + 1);
+
+        }
+    }
 }

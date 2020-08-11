@@ -10,7 +10,11 @@
     />
   </head>
   <body>
-    <div class="card" style="margin: auto; width: 50%; padding: 20px;">
+    <div
+      class="card"
+      style="margin: auto; width: 50%; padding: 20px;"
+      id="converter"
+    >
       <div class="form-group">
         <label for="imageFile">Enter your image in any format:</label>
         <input
@@ -30,7 +34,7 @@
           value="1bit"
           checked
         />
-        <label class="form-check-label" for="exampleRadios1">
+        <label class="form-check-label" for="1bit">
           Monochrome (1 bit)
         </label>
       </div>
@@ -42,20 +46,47 @@
           id="3bit"
           value="3bit"
         />
-        <label class="form-check-label" for="exampleRadios2">
+        <label class="form-check-label" for="3bit">
           3 bit colors
         </label>
       </div>
+
+      <div class="form-check">
+        <br />
+        <input
+          class="form-check-input"
+          type="checkbox"
+          name="dither"
+          id="dither"
+          value="dither"
+        />
+        <label class="form-check-label" for="dither">
+          Dither - quite slow
+        </label>
+      </div>
       <div class="form-group" style="padding-top: 15px;">
-        <input type="checkbox" name="include" id="include" value="include" />
-        <label for="include"
-          >Include width and height in file as [ name ].w and .h</label
-        >
+        <input type="number" min="1" max="800" id="width" onchange="resize()" />
+        <label for="width">width</label><br />
+        <input type="number" min="1" max="600" disabled="true" id="height" />
+        <label for="height">height</label><br />
       </div>
       <div class="form-group" style="padding-top: 15px;">
         <button type="button" id="mainButton" class="btn btn-primary">
           Convert
         </button>
+      </div>
+      <span id="loading" style="display: none;">loading...</span>
+      <div>
+        <canvas
+          style="
+            display: block;
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+          "
+          id="preview"
+        ></canvas>
       </div>
     </div>
 
