@@ -20,8 +20,26 @@ void loop()
     display.clearDisplay();
     display.clean();
 
+    display.selectDisplayMode(INKPLATE_1BIT);
+    display.drawBitmap(0, 0, test4, test4_w, test4_h, BLACK, WHITE);
+    display.display();
+
+    delay(5000);
+
+    display.clearDisplay();
+    display.clean();
+
     display.selectDisplayMode(INKPLATE_3BIT);
-    display.drawBitmap3Bit(0, 0, a, a_w, a_h);
+    display.drawBitmap3Bit(0, 0, test6, test6_w, test6_h);
+    display.display();
+
+    delay(5000);
+
+    display.clearDisplay();
+    display.clean();
+
+    display.selectDisplayMode(INKPLATE_1BIT);
+    display.drawBitmap(0, 0, test7, test7_w, test7_h, BLACK, WHITE);
     display.display();
 
     delay(5000);
