@@ -88,7 +88,7 @@ document.getElementById("mainButton").onclick = () => {
                             last = 0;
                         }
                     }
-                    if (h % 2 != 0) {
+                    if (w % 2 != 0) {
                         s += `0x${last.toString(16)},`;
                         last = 0;
                     }
