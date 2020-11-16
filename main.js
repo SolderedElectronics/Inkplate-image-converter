@@ -79,6 +79,9 @@ document.getElementById("mainButton").onclick = () => {
 
                         let val = pixels[0];
 
+                        if(document.getElementById("inv").checked)
+                            val = 255 - val;
+
                         if (j % 2 == 0)
                             last = val & 0xF0;
                         else {
@@ -101,6 +104,9 @@ document.getElementById("mainButton").onclick = () => {
                         let pixels = canvas.getContext('2d').getImageData(j, i, 1, 1).data;
 
                         let val = (pixels[0] >> 7) & 1;
+
+                        if(document.getElementById("inv").checked)
+                            val = !val;
 
                         let cnt = 7 - j % 8;
 

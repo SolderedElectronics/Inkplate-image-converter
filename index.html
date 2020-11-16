@@ -12,7 +12,7 @@
   <body>
     <div
       class="card"
-      style="margin: auto; width: 40%; padding: 20px;"
+      style="margin: auto; width: 40%; padding: 20px"
       id="converter"
     >
       <div class="form-group">
@@ -34,9 +34,7 @@
           value="1bit"
           checked
         />
-        <label class="form-check-label" for="1bit">
-          Monochrome (1 bit)
-        </label>
+        <label class="form-check-label" for="1bit"> Monochrome (1 bit) </label>
       </div>
       <div class="form-check">
         <input
@@ -46,9 +44,18 @@
           id="3bit"
           value="3bit"
         />
-        <label class="form-check-label" for="3bit">
-          3 bit colors
-        </label>
+        <label class="form-check-label" for="3bit"> 3 bit colors </label>
+      </div>
+
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          name="inv"
+          id="inv"
+          value="inv"
+        />
+        <label class="form-check-label" for="inv"> Invert </label>
       </div>
 
       <div class="form-check">
@@ -75,17 +82,15 @@
           onchange="checkResize()"
           checked
         />
-        <label class="form-check-label" for="toResize">
-          Resize
-        </label>
+        <label class="form-check-label" for="toResize"> Resize </label>
       </div>
-      <div class="form-group" style="padding-top: 15px;">
+      <div class="form-group" style="padding-top: 15px">
         <input type="number" min="1" max="800" id="width" onchange="resize()" />
         <label for="width">width</label><br />
         <input type="number" min="1" max="600" disabled="true" id="height" />
         <label for="height">height</label><br />
       </div>
-      <div class="form-group" style="padding-top: 15px;">
+      <div class="form-group" style="padding-top: 15px">
         <button type="button" id="mainButton" class="btn btn-primary">
           Convert
         </button>
@@ -99,10 +104,10 @@
           Download Header File
         </button>
       </div>
-      <span id="loading" style="display: none;">loading...</span>
-      <div style="width: 100%; display: table;">
-        <div style="display: table-row;">
-          <div style="display: table-cell;">
+      <span id="loading" style="display: none">loading...</span>
+      <div style="width: 100%; display: table">
+        <div style="display: table-row">
+          <div style="display: table-cell">
             <canvas
               style="
                 display: block;
@@ -114,12 +119,8 @@
               id="preview"
             ></canvas>
           </div>
-          <div style="display: table-cell;">
-            <textarea
-              id="textOutput"
-              style="height: 150px;"
-              readonly
-            ></textarea>
+          <div style="display: table-cell">
+            <textarea id="textOutput" style="height: 150px" readonly></textarea>
           </div>
         </div>
       </div>
