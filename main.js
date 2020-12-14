@@ -121,6 +121,7 @@ document.getElementById("mainButton").onclick = () => {
                         s += `0x${last.toString(16)},`;
                         last = 0;
                     }
+                    s += "\n";
                 }
                 s += `};\n`;
             }
