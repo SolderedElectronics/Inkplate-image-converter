@@ -59,7 +59,7 @@ function setPreset(a) {
             document.getElementById("height").value = parseInt(800 * ratio);
         }
         document.getElementById("width").value = 800;
-    } else if (a == 3) {
+    } else if (a == 4) {
         document.getElementById("3bit").checked = true;
         document.getElementById("dither").checked = true;
         document.getElementById("kernels").value = "FloydSteinberg";
@@ -69,7 +69,7 @@ function setPreset(a) {
             document.getElementById("height").value = parseInt(600 * ratio);
         }
         document.getElementById("width").value = 600;
-    } else if (a == 4) {
+    } else if (a == 3) {
         document.getElementById("color").checked = true;
         document.getElementById("dither").checked = true;
         document.getElementById("kernels").value = "FloydSteinberg";
