@@ -46,6 +46,16 @@
         />
         <label class="form-check-label" for="3bit"> Gray (3 bit) colors </label>
       </div>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="radio"
+          name="depth"
+          id="color"
+          value="color"
+        />
+        <label class="form-check-label" for="color"> Inkplate color </label>
+      </div>
 
       <div class="form-check">
         <input
@@ -66,10 +76,23 @@
           name="dither"
           id="dither"
           value="dither"
+          onchange="checkDither()"
+          checked
         />
-        <label class="form-check-label" for="dither">
-          Dither - quite slow
-        </label>
+        <label class="form-check-label" for="dither"> Dither </label>
+        <br />
+        <label for="kernels">Dither kernel:</label>
+        <select name="kernels" id="kernels">
+          <option value="FloydSteinberg">FloydSteinberg</option>
+          <option value="FalseFloydSteinberg">FalseFloydSteinberg</option>
+          <option value="Stucki">Stucki</option>
+          <option value="Atkinson">Atkinson</option>
+          <option value="Jarvis">Jarvis</option>
+          <option value="Burkes">Burkes</option>
+          <option value="Sierra">Sierra</option>
+          <option value="TwoSierra">TwoSierra</option>
+          <option value="SierraLite">SierraLite</option>
+        </select>
       </div>
       <div class="form-check">
         <br />
@@ -133,5 +156,6 @@
     ></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="main.js"></script>
+    <script src="rgbquant.js"></script>
   </body>
 </html>
