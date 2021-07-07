@@ -1,161 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Image Converter</title>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
-  </head>
-  <body>
-    <div
-      class="card"
-      style="margin: auto; width: 40%; padding: 20px"
-      id="converter"
-    >
-      <div class="form-group">
-        <label for="imageFile">Enter your image in any format:</label>
-        <input
-          type="file"
-          accept="image/*"
-          class="form-control-file"
-          id="imageFile"
-        />
-      </div>
-      <p>Select desired color depth:</p>
-      <div class="form-check">
-        <input
-          class="form-check-input"
-          type="radio"
-          name="depth"
-          id="1bit"
-          value="1bit"
-          checked
-        />
-        <label class="form-check-label" for="1bit"> BW (1 bit) colors </label>
-      </div>
-      <div class="form-check">
-        <input
-          class="form-check-input"
-          type="radio"
-          name="depth"
-          id="3bit"
-          value="3bit"
-        />
-        <label class="form-check-label" for="3bit"> Gray (3 bit) colors </label>
-      </div>
-      <div class="form-check">
-        <input
-          class="form-check-input"
-          type="radio"
-          name="depth"
-          id="color"
-          value="color"
-        />
-        <label class="form-check-label" for="color"> Inkplate color </label>
-      </div>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+</head>
 
-      <div class="form-check">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          name="inv"
-          id="inv"
-          value="inv"
-        />
-        <label class="form-check-label" for="inv"> Invert </label>
-      </div>
+<body>
+    <div class="card" style="margin: auto; width: 40%; padding: 20px" id="converter">
+        <table>
+            <tr>
+                <td>
 
-      <div class="form-check">
-        <br />
-        <input
-          class="form-check-input"
-          type="checkbox"
-          name="dither"
-          id="dither"
-          value="dither"
-          onchange="checkDither()"
-          checked
-        />
-        <label class="form-check-label" for="dither"> Dither </label>
-        <br />
-        <label for="kernels">Dither kernel:</label>
-        <select name="kernels" id="kernels">
-          <option value="FloydSteinberg">FloydSteinberg</option>
-          <option value="FalseFloydSteinberg">FalseFloydSteinberg</option>
-          <option value="Stucki">Stucki</option>
-          <option value="Atkinson">Atkinson</option>
-          <option value="Jarvis">Jarvis</option>
-          <option value="Burkes">Burkes</option>
-          <option value="Sierra">Sierra</option>
-          <option value="TwoSierra">TwoSierra</option>
-          <option value="SierraLite">SierraLite</option>
-        </select>
-      </div>
-      <div class="form-check">
-        <br />
-        <input
-          class="form-check-input"
-          type="checkbox"
-          name="toResize"
-          id="toResize"
-          value="toResize"
-          onchange="checkResize()"
-          checked
-        />
-        <label class="form-check-label" for="toResize"> Resize </label>
-      </div>
-      <div class="form-group" style="padding-top: 15px">
-        <input type="number" min="1" max="800" id="width" onchange="resize()" />
-        <label for="width">width</label><br />
-        <input type="number" min="1" max="600" disabled="true" id="height" />
-        <label for="height">height</label><br />
-      </div>
-      <div class="form-group" style="padding-top: 15px">
-        <button type="button" id="mainButton" class="btn btn-primary">
-          Convert
-        </button>
-        <button
-          type="button"
-          id="downloadButton"
-          class="btn btn-secondary"
-          disabled
-          onclick="downloadHandler()"
-        >
-          Download Header File
-        </button>
-      </div>
-      <span id="loading" style="display: none">loading...</span>
-      <div style="width: 100%; display: table">
-        <div style="display: table-row">
-          <div style="display: table-cell">
-            <canvas
-              style="
+                    <div class="form-group">
+                        <label for="imageFile">Enter your image in any format:</label>
+                        <input type="file" accept="image/*" class="form-control-file" id="imageFile" />
+                    </div>
+                    <hr>
+                    <p>Select desired color depth:</p>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="depth" id="1bit" value="1bit" checked />
+                        <label class="form-check-label" for="1bit"> BW (1 bit) colors </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="depth" id="3bit" value="3bit" />
+                        <label class="form-check-label" for="3bit"> Gray (3 bit) colors </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="depth" id="color" value="color" />
+                        <label class="form-check-label" for="color"> Inkplate color </label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="inv" id="inv" value="inv" />
+                        <label class="form-check-label" for="inv"> Invert </label>
+                    </div>
+                    <hr>
+                    <div class="form-check">
+                        <br />
+                        <input class="form-check-input" type="checkbox" name="dither" id="dither" value="dither"
+                            onchange="checkDither()" checked />
+                        <label class="form-check-label" for="dither"> Dither </label>
+                        <br />
+                        <label for="kernels">Dither kernel:</label>
+                        <select name="kernels" id="kernels">
+                            <option value="FloydSteinberg">FloydSteinberg</option>
+                            <option value="FalseFloydSteinberg">FalseFloydSteinberg</option>
+                            <option value="Stucki">Stucki</option>
+                            <option value="Atkinson">Atkinson</option>
+                            <option value="Jarvis">Jarvis</option>
+                            <option value="Burkes">Burkes</option>
+                            <option value="Sierra">Sierra</option>
+                            <option value="TwoSierra">TwoSierra</option>
+                            <option value="SierraLite">SierraLite</option>
+                        </select>
+                    </div>
+                    <hr>
+                    <div class="form-check">
+                        <br />
+                        <input class="form-check-input" type="checkbox" name="toResize" id="toResize" value="toResize"
+                            onchange="checkResize()" checked />
+                        <label class="form-check-label" for="toResize"> Resize </label>
+                    </div>
+                    <div class="form-group" style="padding-top: 15px">
+                        <input type="number" min="1" max="800" id="width" onchange="resize()" />
+                        <label for="width">width</label><br />
+                        <input type="number" min="1" max="600" disabled="true" id="height" />
+                        <label for="height">height</label><br />
+                    </div>
+
+                </td>
+                <td>
+                    <hr>
+                    <p>Inkplate presets:</p>
+                    <div class="form-check">
+                        <input type="button" class="btn btn-secondary" value="Inkplate 6" onclick="setPreset(0)"
+                            style="margin-bottom:5px; width:100%;" />
+                        <br>
+                    </div>
+                    <div class="form-check">
+                        <input type="button" class="btn btn-secondary" value="Inkplate 10" onclick="setPreset(1)"
+                            style="margin-bottom:5px; width:100%;" />
+                        <br>
+                    </div>
+                    <div class="form-check">
+                        <input type="button" class="btn btn-secondary" value="Inkplate 5" onclick="setPreset(2)"
+                            style="margin-bottom:5px; width:100%;" />
+                        <br>
+                    </div>
+                    <div class="form-check">
+                        <input type="button" class="btn btn-secondary" value="Inkplate 6PLUS" onclick="setPreset(3)"
+                            style="margin-bottom:5px; width:100%;" />
+                        <br>
+                    </div>
+                    <div class="form-check">
+                        <input type="button" class="btn btn-secondary" value="Inkplate 6COLOR" onclick="setPreset(4)"
+                            style="margin-bottom:5px; width:100%;" />
+                        <br>
+                        <hr>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div class="form-group" style="padding-top: 15px">
+            <button type="button" id="mainButton" class="btn btn-primary">
+                Convert
+            </button>
+            <button type="button" id="downloadButton" class="btn btn-secondary" disabled onclick="downloadHandler()">
+                Download Header File
+            </button>
+        </div>
+        <hr>
+        <span id="loading" style="display: none">loading...</span>
+        <div style="width: 100%; display: table">
+            <div style="display: table-row">
+                <div style="display: table-cell">
+                    <canvas style="
                 display: block;
                 max-width: 100%;
                 max-height: 100%;
                 width: auto;
                 height: auto;
-              "
-              id="preview"
-            ></canvas>
-          </div>
-          <div style="display: table-cell">
-            <textarea id="textOutput" style="height: 150px" readonly></textarea>
-          </div>
+              " id="preview"></canvas>
+                </div>
+                <div style="display: table-cell">
+                    <textarea id="textOutput" style="height: 150px" readonly></textarea>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
-    <script
-      src="https://code.jquery.com/jquery-3.5.1.min.js"
-      integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="main.js"></script>
     <script src="rgbquant.js"></script>
-  </body>
+</body>
+
 </html>

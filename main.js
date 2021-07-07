@@ -16,12 +16,70 @@ document.getElementById("imageFile").onchange = (event) => {
         preview.src = reader.result;
 
         setTimeout(() => {
-            document.getElementById("width").value = preview.width;
-            document.getElementById("height").value = preview.height;
+            if (!document.getElementById("width").value) {
+                document.getElementById("width").value = preview.width;
+                document.getElementById("height").value = preview.height;
+            } else {
+                document.getElementById("height").value = parseInt(document.getElementById("width").value) * preview.height / preview.width;
+            }
         }, 10);
     }
 
     reader.readAsDataURL(file);
+}
+
+function setPreset(a) {
+    if (a == 0) {
+        document.getElementById("3bit").checked = true;
+        document.getElementById("dither").checked = true;
+        document.getElementById("kernels").value = "FloydSteinberg";
+        document.getElementById("toResize").checked = true;
+        if (document.getElementById("width").value && document.getElementById("height").value) {
+            let ratio = document.getElementById("height").value / document.getElementById("width").value;
+            document.getElementById("height").value = parseInt(800 * ratio);
+        }
+        document.getElementById("width").value = 800;
+    } else if (a == 1) {
+        document.getElementById("3bit").checked = true;
+        document.getElementById("dither").checked = true;
+        document.getElementById("kernels").value = "FloydSteinberg";
+        document.getElementById("toResize").checked = true;
+        if (document.getElementById("width").value && document.getElementById("height").value) {
+            let ratio = document.getElementById("height").value / document.getElementById("width").value;
+            document.getElementById("height").value = parseInt(1200 * ratio);
+        }
+        document.getElementById("width").value = 1200;
+    } else if (a == 2) {
+        document.getElementById("3bit").checked = true;
+        document.getElementById("dither").checked = true;
+        document.getElementById("kernels").value = "FloydSteinberg";
+        document.getElementById("toResize").checked = true;
+        if (document.getElementById("width").value && document.getElementById("height").value) {
+            let ratio = document.getElementById("height").value / document.getElementById("width").value;
+            document.getElementById("height").value = parseInt(800 * ratio);
+        }
+        document.getElementById("width").value = 800;
+    } else if (a == 3) {
+        document.getElementById("3bit").checked = true;
+        document.getElementById("dither").checked = true;
+        document.getElementById("kernels").value = "FloydSteinberg";
+        document.getElementById("toResize").checked = true;
+        if (document.getElementById("width").value && document.getElementById("height").value) {
+            let ratio = document.getElementById("height").value / document.getElementById("width").value;
+            document.getElementById("height").value = parseInt(600 * ratio);
+        }
+        document.getElementById("width").value = 600;
+    } else if (a == 4) {
+        document.getElementById("color").checked = true;
+        document.getElementById("dither").checked = true;
+        document.getElementById("kernels").value = "FloydSteinberg";
+        document.getElementById("toResize").checked = true;
+        if (document.getElementById("width").value && document.getElementById("height").value) {
+            let ratio = document.getElementById("height").value / document.getElementById("width").value;
+            document.getElementById("height").value = parseInt(1024 * ratio);
+        }
+        document.getElementById("width").value = 1024;
+    }
 }
 
 function checkResize() {
