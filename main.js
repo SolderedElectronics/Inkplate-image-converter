@@ -34,8 +34,13 @@ function setPreset(a) {
         document.getElementById("dither").checked = true;
         document.getElementById("kernels").value = "FloydSteinberg";
         document.getElementById("toResize").checked = true;
-        if (document.getElementById("width").value && document.getElementById("height").value) {
-            let ratio = document.getElementById("height").value / document.getElementById("width").value;
+        if (
+            document.getElementById("width").value &&
+            document.getElementById("height").value
+        ) {
+            let ratio =
+                document.getElementById("height").value /
+                document.getElementById("width").value;
             document.getElementById("height").value = parseInt(800 * ratio);
         }
         document.getElementById("width").value = 800;
@@ -44,8 +49,13 @@ function setPreset(a) {
         document.getElementById("dither").checked = true;
         document.getElementById("kernels").value = "FloydSteinberg";
         document.getElementById("toResize").checked = true;
-        if (document.getElementById("width").value && document.getElementById("height").value) {
-            let ratio = document.getElementById("height").value / document.getElementById("width").value;
+        if (
+            document.getElementById("width").value &&
+            document.getElementById("height").value
+        ) {
+            let ratio =
+                document.getElementById("height").value /
+                document.getElementById("width").value;
             document.getElementById("height").value = parseInt(1200 * ratio);
         }
         document.getElementById("width").value = 1200;
@@ -54,8 +64,13 @@ function setPreset(a) {
         document.getElementById("dither").checked = true;
         document.getElementById("kernels").value = "FloydSteinberg";
         document.getElementById("toResize").checked = true;
-        if (document.getElementById("width").value && document.getElementById("height").value) {
-            let ratio = document.getElementById("height").value / document.getElementById("width").value;
+        if (
+            document.getElementById("width").value &&
+            document.getElementById("height").value
+        ) {
+            let ratio =
+                document.getElementById("height").value /
+                document.getElementById("width").value;
             document.getElementById("height").value = parseInt(800 * ratio);
         }
         document.getElementById("width").value = 800;
@@ -64,8 +79,13 @@ function setPreset(a) {
         document.getElementById("dither").checked = true;
         document.getElementById("kernels").value = "FloydSteinberg";
         document.getElementById("toResize").checked = true;
-        if (document.getElementById("width").value && document.getElementById("height").value) {
-            let ratio = document.getElementById("height").value / document.getElementById("width").value;
+        if (
+            document.getElementById("width").value &&
+            document.getElementById("height").value
+        ) {
+            let ratio =
+                document.getElementById("height").value /
+                document.getElementById("width").value;
             document.getElementById("height").value = parseInt(600 * ratio);
         }
         document.getElementById("width").value = 600;
@@ -74,11 +94,29 @@ function setPreset(a) {
         document.getElementById("dither").checked = true;
         document.getElementById("kernels").value = "FloydSteinberg";
         document.getElementById("toResize").checked = true;
-        if (document.getElementById("width").value && document.getElementById("height").value) {
-            let ratio = document.getElementById("height").value / document.getElementById("width").value;
+        if (
+            document.getElementById("width").value &&
+            document.getElementById("height").value
+        ) {
+            let ratio =
+                document.getElementById("height").value /
+                document.getElementById("width").value;
             document.getElementById("height").value = parseInt(1024 * ratio);
         }
         document.getElementById("width").value = 1024;
+    } else if (a == 5) {
+        document.getElementById("rb").checked = true;
+        document.getElementById("toResize").checked = true;
+        if (
+            document.getElementById("width").value &&
+            document.getElementById("height").value
+        ) {
+            let ratio =
+                document.getElementById("height").value /
+                document.getElementById("width").value;
+            document.getElementById("height").value = parseInt(104 * ratio);
+        }
+        document.getElementById("width").value = 104;
     }
 }
 
@@ -180,7 +218,7 @@ document.getElementById("mainButton").onclick = () => {
                     s += "\n";
                 }
                 s += `};\n`;
-            } else { // color
+            } else if (document.getElementById("color").checked) {
                 for (let i = 0; i < h; ++i) {
                     for (let j = 0; j < w; ++j) {
                         let r = pixels[4 * (j + i * w)];
@@ -207,7 +245,44 @@ document.getElementById("mainButton").onclick = () => {
                     s += "\n";
                 }
                 s += `};\n`;
+            } else if (document.getElementById("rb").checked) {
+                for (let i = 0; i < h; ++i) {
+                    for (let j = 0; j < w; ++j) {
+                        let r = pixels[4 * (j + i * w)];
+                        let g = pixels[4 * (j + i * w) + 1];
+                        let b = pixels[4 * (j + i * w) + 2];
+
+                        let palette = [0x000000, 0xFF0000, 0xFFFFFF];
+
+                        let val = palette.indexOf((r << 16) | (g << 8) | b);
+
+                        if (j % 4 == 0)
+                            last = (val << 6) & 0xc0;
+                        if (j % 4 == 1)
+                            last |= (val << 4) & 0x30;
+                        if (j % 4 == 2)
+                            last |= (val << 2) & 0x0c;
+                        else { //    3
+                            last |= (val) & 0x03;
+
+                            s += `0x${last.toString(16)},`;
+                            last = 0;
+                        }
+
+                        s += `0x${last.toString(16)},`;
+                        last = 0;
+
+                    }
+                    if (w % 4 != 0) {
+                        s += `0x${last.toString(16)},`;
+                        last = 0;
+                    }
+                    s += "\n";
+                }
+                s += `};\n`;
             }
+
+
             finished = 1;
 
             result = {
@@ -270,6 +345,12 @@ function dither(canvas, depth) {
             [255, 243, 56],
             [194, 164, 244],
         ];
+    } else if (document.getElementById("rb").checked) {
+        pallete = [
+            [0, 0, 0],
+            [255, 0, 0],
+            [255, 255, 255],
+        ];
     }
 
     var opts = {
@@ -281,8 +362,6 @@ function dither(canvas, depth) {
     };
 
     var q = new RgbQuant(opts);
-
-
 
     if (document.getElementById("inv").checked && document.getElementById("color").checked) {
         let dataArr = canvas.getContext("2d").getImageData(0, 0, w, h).data;
