@@ -247,30 +247,30 @@ document.getElementById("mainButton").onclick = () => {
                 s += `};\n`;
             } else if (document.getElementById("rb").checked) {
                 for (let i = 0; i < h; ++i) {
+                    let last = 0;
                     for (let j = 0; j < w; ++j) {
                         let r = pixels[4 * (j + i * w)];
                         let g = pixels[4 * (j + i * w) + 1];
                         let b = pixels[4 * (j + i * w) + 2];
 
-                        let palette = [0x000000, 0xFF0000, 0xFFFFFF];
+                        let palette = [0xFFFFFF, 0x000000, 0xFF0000];
 
                         let val = palette.indexOf((r << 16) | (g << 8) | b);
 
+
                         if (j % 4 == 0)
-                            last = (val << 6) & 0xc0;
-                        if (j % 4 == 1)
-                            last |= (val << 4) & 0x30;
-                        if (j % 4 == 2)
-                            last |= (val << 2) & 0x0c;
-                        else { //    3
-                            last |= (val) & 0x03;
+                            last = val << 6;
+                        else if (j % 4 == 1)
+                            last |= val << 4;
+                        else if (j % 4 == 2)
+                            last |= val << 2;
+                        else if (j % 4 == 3) {
+                            last |= val;
 
                             s += `0x${last.toString(16)},`;
                             last = 0;
                         }
 
-                        s += `0x${last.toString(16)},`;
-                        last = 0;
 
                     }
                     if (w % 4 != 0) {
