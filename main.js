@@ -75,8 +75,8 @@ function setPreset(a) {
         }
         document.getElementById("width").value = 800;
     } else if (a == 4) {
-        document.getElementById("3bit").checked = true;
-        document.getElementById("dither").checked = true;
+        document.getElementById("color").checked = true;
+        document.getElementById("dither").checked = false;
         document.getElementById("kernels").value = "FloydSteinberg";
         document.getElementById("toResize").checked = true;
         if (
@@ -90,7 +90,7 @@ function setPreset(a) {
         }
         document.getElementById("width").value = 600;
     } else if (a == 3) {
-        document.getElementById("color").checked = true;
+        document.getElementById("3bit").checked = true;
         document.getElementById("dither").checked = true;
         document.getElementById("kernels").value = "FloydSteinberg";
         document.getElementById("toResize").checked = true;
@@ -339,11 +339,11 @@ function dither(canvas, depth) {
         pallete = [
             [0, 0, 0],
             [255, 255, 255],
-            [67, 138, 28],
-            [100, 64, 255],
-            [191, 0, 0],
-            [255, 243, 56],
-            [194, 164, 244],
+            [0, 255, 0],
+            [0, 0, 255],
+            [255, 0, 0],
+            [255, 255, 0],
+            [255, 128, 0],
         ];
     } else if (document.getElementById("rb").checked) {
         pallete = [

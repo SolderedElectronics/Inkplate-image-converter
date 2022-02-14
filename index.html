@@ -30,13 +30,14 @@
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="depth" id="rb" value="rb" />
-                        <label class="form-check-label" for="rb"> Inkplate red and black </label>
+                        <label class="form-check-label" for="rb"> Red & Black </label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="depth" id="color" value="color" />
-                        <label class="form-check-label" for="color"> Inkplate color </label>
+                        <label class="form-check-label" for="color"> Color </label>
                     </div>
-
+                    <hr>
+                    <p>Invert colors:</p>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="inv" id="inv" value="inv" />
                         <label class="form-check-label" for="inv"> Invert </label>
@@ -78,24 +79,19 @@
                 </td>
                 <td>
                     <hr>
-                    <p>Inkplate presets:</p>
+                    <p>Inkplate board:</p>
                     <div class="form-check">
                         <input type="button" class="btn btn-secondary" value="Inkplate 2" onclick="setPreset(5)"
                             style="margin-bottom:5px; width:100%; margin-right:5px;" />
                         <br>
                     </div>
                     <div class="form-check">
-                        <input type="button" class="btn btn-secondary" value="Inkplate 6" onclick="setPreset(0)"
-                            style="margin-bottom:5px; width:100%; margin-right:5px;" />
-                        <br>
-                    </div>
-                    <div class="form-check">
-                        <input type="button" class="btn btn-secondary" value="Inkplate 10" onclick="setPreset(1)"
-                            style="margin-bottom:5px; width:100%; margin-right:5px;" />
-                        <br>
-                    </div>
-                    <div class="form-check">
                         <input type="button" class="btn btn-secondary" value="Inkplate 5" onclick="setPreset(2)"
+                            style="margin-bottom:5px; width:100%; margin-right:5px;" />
+                        <br>
+                    </div>
+                    <div class="form-check">
+                        <input type="button" class="btn btn-secondary" value="Inkplate 6" onclick="setPreset(0)"
                             style="margin-bottom:5px; width:100%; margin-right:5px;" />
                         <br>
                     </div>
@@ -108,8 +104,13 @@
                         <input type="button" class="btn btn-secondary" value="Inkplate 6COLOR" onclick="setPreset(4)"
                             style="margin-bottom:5px; width:100%; margin-right:5px;" />
                         <br>
-                        <hr>
                     </div>
+                    <div class="form-check">
+                        <input type="button" class="btn btn-secondary" value="Inkplate 10" onclick="setPreset(1)"
+                            style="margin-bottom:5px; width:100%; margin-right:5px;" />
+                        <br>
+                    </div>
+                    <hr>
                 </td>
             </tr>
         </table>
