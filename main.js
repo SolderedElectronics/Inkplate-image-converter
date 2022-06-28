@@ -15,14 +15,14 @@ document.getElementById("imageFile").onchange = (event) => {
     reader.onload = () => {
         preview.src = reader.result;
 
-        setTimeout(() => {
+        preview.onload = function () {
             if (!document.getElementById("width").value) {
                 document.getElementById("width").value = preview.width;
                 document.getElementById("height").value = preview.height;
             } else {
                 document.getElementById("height").value = parseInt(document.getElementById("width").value) * preview.height / preview.width;
             }
-        }, 100);
+        }
     }
 
     reader.readAsDataURL(file);
