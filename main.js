@@ -22,7 +22,7 @@ document.getElementById("imageFile").onchange = (event) => {
             } else {
                 document.getElementById("height").value = parseInt(document.getElementById("width").value) * preview.height / preview.width;
             }
-        }, 10);
+        }, 100);
     }
 
     reader.readAsDataURL(file);
