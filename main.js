@@ -225,9 +225,30 @@ document.getElementById("mainButton").onclick = () => {
                         let g = pixels[4 * (j + i * w) + 1];
                         let b = pixels[4 * (j + i * w) + 2];
 
-                        let palette = [0x000000, 0xFFFFFF, 0x438A1C, 0x6440FF, 0xBF0000, 0xFFF338, 0xE87E00, 0xC2A4F4];
+                        // [0, 0, 0],
+                        // [255, 255, 255],
+                        // [0, 255, 0],
+                        // [0, 0, 255],
+                        // [255, 0, 0],
+                        // [255, 255, 0],
+                        // [255, 128, 0]
 
-                        let val = palette.indexOf((r << 16) | (g << 8) | b) << 5;
+                        let palette = [0x000000,
+                            0xFFFFFF,
+                            0x00FF00,
+                            0x0000FF,
+                            0xFF0000,
+                            0xFFFF00,
+                            0xFF8000];
+
+                        let val = palette.indexOf((r << 16) | (g << 8) | b);
+                        // console.log(val, r, g, b)
+
+
+                        if (val == -1)
+                            console.log((r << 16) | (g << 8) | b)
+
+                        val <<= 5;
 
                         if (j % 2 == 0)
                             last = val & 0xF0;
