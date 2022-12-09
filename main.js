@@ -155,7 +155,6 @@ document.getElementById("mainButton").onclick = () => {
 
             output.style.filter = "grayscale(100%)"; //I hope this works
 
-            // console.log(w, h);
 
             canvas.getContext('2d').fillStyle = "#FFFFFF";
             canvas.getContext('2d').fillRect(0, 0, w, h);
@@ -166,8 +165,8 @@ document.getElementById("mainButton").onclick = () => {
 
             s = `const uint8_t ${fname}[] PROGMEM = {\n`;
 
-            if (document.getElementById("dither").checked || document.getElementById("color").checked)
-                dither(canvas, document.getElementById("3bit").checked ? 3 : 1);
+            // if (document.getElementById("dither").checked || document.getElementById("color").checked)
+            dither(canvas, document.getElementById("3bit").checked ? 3 : 1);
 
             document.getElementById("preview").getContext('2d').drawImage(canvas, 0, 0, parseInt(preview.width) / parseInt(preview.height) * document.getElementById("preview").height, document.getElementById("preview").height);
 
@@ -178,8 +177,6 @@ document.getElementById("mainButton").onclick = () => {
                     for (let j = 0; j < w; ++j) {
                         let val = pixels[4 * (j + i * w)];
 
-                        if (document.getElementById("inv").checked)
-                            val = 255 - val;
 
                         if (j % 2 == 0)
                             last = val & 0xF0;
@@ -202,8 +199,6 @@ document.getElementById("mainButton").onclick = () => {
                     for (let j = 0; j < w; ++j) {
                         let val = (pixels[4 * (j + i * w)] >> 7) & 1;
 
-                        if (document.getElementById("inv").checked)
-                            val = !val;
 
                         let cnt = 7 - j % 8;
 
@@ -245,11 +240,7 @@ document.getElementById("mainButton").onclick = () => {
                             0xFF8000];
 
                         let val = palette.indexOf((r << 16) | (g << 8) | b);
-                        // console.log(val, r, g, b)
-
-
-                        if (val == -1)
-                            console.log((r << 16) | (g << 8) | b)
+                        
 
                         val <<= 5;
 
@@ -277,21 +268,11 @@ document.getElementById("mainButton").onclick = () => {
                         let g = pixels[4 * (j + i * w) + 1];
                         let b = pixels[4 * (j + i * w) + 2];
 
+
                         let palette = [0xFFFFFF, 0x000000, 0xFF0000];
 
                         let val = palette.indexOf((r << 16) | (g << 8) | b);
-
-                        let red_dist = (r - 255) * (r - 255) + g * g + b * b;
-                        let black_dist = r * r + g * g + b * b;
-                        let white_dist = (r - 255) * (r - 255) + (g - 255) * (g - 255) + (b - 255) * (b - 255);
-
-                        if (red_dist < black_dist && red_dist < white_dist)
-                            val = 2;
-                        else if (black_dist < white_dist)
-                            val = 1;
-                        else
-                            val = 0;
-                        
+                
 
                         if (j % 4 == 0)
                             last = val << 6;
@@ -398,13 +379,13 @@ function dither(canvas, depth) {
 
     var q = new RgbQuant(opts);
 
-    if (document.getElementById("inv").checked && document.getElementById("color").checked) {
+    if (document.getElementById("inv").checked) {
         let dataArr = canvas.getContext("2d").getImageData(0, 0, w, h).data;
         for (var i = 0; i < dataArr.length; i += 4) {
-            var r = dataArr[i]; // Red color lies between 0 and 255
-            var g = dataArr[i + 1]; // Green color lies between 0 and 255
-            var b = dataArr[i + 2]; // Blue color lies between 0 and 255
-            var a = dataArr[i + 3]; // Transparency lies between 0 and 255
+            var r = dataArr[i];
+            var g = dataArr[i + 1]; 
+            var b = dataArr[i + 2]; 
+            var a = dataArr[i + 3]; 
 
             var invertedRed = 255 - r;
             var invertedGreen = 255 - g;
