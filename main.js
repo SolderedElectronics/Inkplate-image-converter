@@ -155,7 +155,10 @@ document.getElementById("mainButton").onclick = () => {
 
             output.style.filter = "grayscale(100%)"; //I hope this works
 
-            console.log(w, h);
+            // console.log(w, h);
+
+            canvas.getContext('2d').fillStyle = "#FFFFFF";
+            canvas.getContext('2d').fillRect(0, 0, w, h);
 
             canvas.getContext('2d').drawImage(output, 0, 0, w, h);
 
@@ -278,6 +281,17 @@ document.getElementById("mainButton").onclick = () => {
 
                         let val = palette.indexOf((r << 16) | (g << 8) | b);
 
+                        let red_dist = (r - 255) * (r - 255) + g * g + b * b;
+                        let black_dist = r * r + g * g + b * b;
+                        let white_dist = (r - 255) * (r - 255) + (g - 255) * (g - 255) + (b - 255) * (b - 255);
+
+                        if (red_dist < black_dist && red_dist < white_dist)
+                            val = 2;
+                        else if (black_dist < white_dist)
+                            val = 1;
+                        else
+                            val = 0;
+                        
 
                         if (j % 4 == 0)
                             last = val << 6;
